@@ -1,9 +1,7 @@
 package lms.model;
-
 public class Student extends Member{
-    private String universityId;
-    public Student(String memberId,String name,String universityId){
-        super(memberId, name);
-        this.universityId = universityId;
+    private static final int STUDENT_BORROW_LIMIT=3;
+    public Student(String memberId,String name) {
+        super(memberId, name,STUDENT_BORROW_LIMIT);
     }
 }
