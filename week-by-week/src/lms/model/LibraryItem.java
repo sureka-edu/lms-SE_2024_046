@@ -27,4 +27,7 @@ public abstract class LibraryItem{
     public void setBorrowed(boolean borrowed){
         isBorrowed=borrowed;
     }
+    public double calculateLateFee(int daysLate) {
+        return daysLate * 10.0;
+    }
 }
