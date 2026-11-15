@@ -27,4 +27,10 @@ public class Library {
             System.out.println(member);
         }
     }
+    public void displayLateFees(int daysLate) {
+
+    for (LibraryItem item : items) {
+        System.out.println(item.getTitle()+"-Late Fee:Rs. "+item.calculateLateFee(daysLate));
+    }
+}
 }
