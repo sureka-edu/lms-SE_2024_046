@@ -12,8 +12,11 @@ public class PolymorphismTest {
 
         item = new Book("B01", "Java Programming", "James");
         System.out.println("Book late fee: Rs. " + item.calculateLateFee(3));
-
         item = new DVD("D01", "Java Tutorial", 120);
         System.out.println("DVD late fee: Rs. " + item.calculateLateFee(3));
+        Library library = new Library();
+        library.addItem(new Book("B01", "Java Programming", "James"));
+        library.addItem(new DVD("D01", "Java Tutorial", 120));
+        library.displayLateFees(3);
     }
 }
