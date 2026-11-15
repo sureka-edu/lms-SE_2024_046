@@ -12,4 +12,8 @@ public class DVD extends LibraryItem{
     public void setDurationMinutes(int durationMinutes){
         this.durationMinutes=durationMinutes;
     }
+    @Override
+    public double calculateLateFee(int daysLate) {
+        return daysLate * 25.0;
+    }
 }
