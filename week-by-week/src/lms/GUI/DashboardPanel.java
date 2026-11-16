@@ -18,5 +18,8 @@ public class DashboardPanel extends JPanel {
         add(heading, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.CENTER);
         setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        JLabel footer = new JLabel("Welcome to the Library Management System",SwingConstants.CENTER);
+        footer.setFont(new Font("Arial", Font.PLAIN, 14));
+        add(footer, BorderLayout.SOUTH);
     }
 }
