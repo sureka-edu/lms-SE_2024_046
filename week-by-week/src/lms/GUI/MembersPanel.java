@@ -19,5 +19,13 @@ public class MembersPanel extends JPanel{
         add(heading, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
         setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        JButton backButton=new JButton("Back to Dashboard");
+        backButton.addActionListener(e->{Container parent=getParent();
+        if (parent instanceof JPanel) {
+            CardLayout layout=(CardLayout)parent.getLayout();
+            layout.show(parent,"Dashboard");
+        }
+        });
+        add(backButton, BorderLayout.SOUTH);
     }
 }
