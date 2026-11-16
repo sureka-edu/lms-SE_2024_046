@@ -11,6 +11,11 @@ public class DashboardPanel extends JPanel {
         JButton membersButton=new JButton("Members");
         JButton borrowButton=new JButton("Borrow Items");
         JButton returnButton=new JButton("Return Items");
+        Dimension buttonSize = new Dimension(150, 80);
+        booksButton.setPreferredSize(buttonSize);
+        membersButton.setPreferredSize(buttonSize);
+        borrowButton.setPreferredSize(buttonSize);
+        returnButton.setPreferredSize(buttonSize);
         buttonPanel.add(booksButton);
         buttonPanel.add(membersButton);
         buttonPanel.add(borrowButton);
