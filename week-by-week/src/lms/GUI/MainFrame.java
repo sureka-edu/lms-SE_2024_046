@@ -16,11 +16,14 @@ public class MainFrame extends JFrame{
         mainPanel.add(new MembersPanel(),"Members");
         mainPanel.add(new BorrowPanel(),"Borrow");
         mainPanel.add(new ReturnPanel(),"Return");
-        add(mainPanel);
+        add(mainPanel,BorderLayout.CENTER);
+        JLabel statusBar = new JLabel("Library Management System");
+        statusBar.setBorder(BorderFactory.createEtchedBorder());
+        add(statusBar, BorderLayout.SOUTH);
         cardLayout.show(mainPanel, "Dashboard");
         setVisible(true);
     }
     public static void main(String[] args){
-        SwingUtilities.invokeLater(() -> new MainFrame());
+        SwingUtilities.invokeLater(()->new MainFrame());
     }
 }
