@@ -13,6 +13,9 @@ public class BooksPanel extends JPanel{
                 {"B03", "Database Systems", "Elmasri", "Available"}
         };
         JTable booksTable = new JTable(data, columns);
+        booksTable.setRowHeight(30);
+        booksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        booksTable.setFillsViewportHeight(true);
         JScrollPane scrollPane = new JScrollPane(booksTable);
         add(heading, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
