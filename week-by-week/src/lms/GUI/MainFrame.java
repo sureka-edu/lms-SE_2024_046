@@ -27,7 +27,7 @@ public class MainFrame extends JFrame{
         mainPanel=new JPanel(cardLayout);
         mainPanel.add(new DashboardPanel(cardLayout, mainPanel),"Dashboard");
         mainPanel.add(new BooksPanel(library), "Books");
-        mainPanel.add(new MembersPanel(),"Members");
+        mainPanel.add(new MembersPanel(library),"Members");
         mainPanel.add(new BorrowPanel(),"Borrow");
         mainPanel.add(new ReturnPanel(),"Return");
         add(mainPanel, BorderLayout.CENTER);
