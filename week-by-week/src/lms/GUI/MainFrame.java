@@ -11,7 +11,7 @@ public class MainFrame extends JFrame{
         setLocationRelativeTo(null);
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
-        mainPanel.add(new DashboardPanel(),"Dashboard");
+        mainPanel.add(new DashboardPanel(cardLayout,mainPanel),"Dashboard");
         mainPanel.add(new BooksPanel(),"Books");
         mainPanel.add(new MembersPanel(),"Members");
         mainPanel.add(new BorrowPanel(),"Borrow");
