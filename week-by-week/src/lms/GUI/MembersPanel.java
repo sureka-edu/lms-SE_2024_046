@@ -15,6 +15,9 @@ public class MembersPanel extends JPanel{
                 {"M03","Kamal","3","0"}
         };
         JTable membersTable = new JTable(data, columns);
+        membersTable.setRowHeight(30);
+        membersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        membersTable.setFillsViewportHeight(true);
         JScrollPane scrollPane = new JScrollPane(membersTable);
         add(heading, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
