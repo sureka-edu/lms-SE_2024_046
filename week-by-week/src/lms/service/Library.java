@@ -19,6 +19,12 @@ public class Library {
     public void addMember(Member member){
         members.add(member);
     }
+    public List<LibraryItem> getItems(){
+        return items;
+    }
+    public List<Member>getMembers(){
+        return members;
+    }
     public void displayItems(){
         for (LibraryItem item : items){
             System.out.println(item);
