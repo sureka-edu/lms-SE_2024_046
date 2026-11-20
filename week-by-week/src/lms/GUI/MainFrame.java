@@ -11,6 +11,8 @@ public class MainFrame extends JFrame{
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private Library library;
+    private BooksPanel booksPanel;
+    private MembersPanel membersPanel;
     public MainFrame(){
         setTitle("Library Management System");
         setSize(800,600);
@@ -25,6 +27,8 @@ public class MainFrame extends JFrame{
         library.addMember(new Staff("M03","Kamal"));
         cardLayout=new CardLayout();
         mainPanel=new JPanel(cardLayout);
+        booksPanel = new BooksPanel(library);
+        membersPanel = new MembersPanel(library);
         mainPanel.add(new DashboardPanel(cardLayout, mainPanel),"Dashboard");
         mainPanel.add(new BooksPanel(library),"Books");
         mainPanel.add(new MembersPanel(library),"Members");
@@ -37,6 +41,11 @@ public class MainFrame extends JFrame{
         cardLayout.show(mainPanel,"Dashboard");
         setVisible(true);
     }
+    public void refreshTables(){
+        booksPanel.refreshTable();
+        membersPanel.refreshTable();
+    }
+
     public static void main(String[] args){
         SwingUtilities.invokeLater(()->new MainFrame());
     }
