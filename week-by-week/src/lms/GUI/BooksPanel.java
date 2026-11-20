@@ -1,5 +1,6 @@
 package lms.gui;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 public class BooksPanel extends JPanel{
     public BooksPanel(){
@@ -12,7 +13,8 @@ public class BooksPanel extends JPanel{
                 {"B02", "C Programming", "Dennis", "Borrowed"},
                 {"B03", "Database Systems", "Elmasri", "Available"}
         };
-        JTable booksTable = new JTable(data, columns);
+        DefaultTableModel tableModel=new DefaultTableModel(data,columns);
+        JTable booksTable=new JTable(tableModel);
         booksTable.setRowHeight(30);
         booksTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         booksTable.setFillsViewportHeight(true);
