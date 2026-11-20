@@ -2,7 +2,7 @@ package lms.gui;
 import javax.swing.*;
 import java.awt.*;
 public class DashboardPanel extends JPanel {
-    public DashboardPanel() {
+    public DashboardPanel(CardLayout cardLayout,JPanel mainPanel){
         setLayout(new BorderLayout(10,10));
         JLabel heading=new JLabel("Library Management System",SwingConstants.CENTER);
         heading.setFont(new Font("Arial",Font.BOLD,24));
@@ -12,6 +12,10 @@ public class DashboardPanel extends JPanel {
         JButton borrowButton=new JButton("Borrow Items");
         JButton returnButton=new JButton("Return Items");
         Dimension buttonSize = new Dimension(150, 80);
+        booksButton.addActionListener(e->cardLayout.show(mainPanel,"Books"));
+        membersButton.addActionListener(e->cardLayout.show(mainPanel,"Members"));
+        borrowButton.addActionListener(e->cardLayout.show(mainPanel,"Borrow"));
+        returnButton.addActionListener(e->cardLayout.show(mainPanel,"Return"));
         booksButton.setPreferredSize(buttonSize);
         membersButton.setPreferredSize(buttonSize);
         borrowButton.setPreferredSize(buttonSize);
