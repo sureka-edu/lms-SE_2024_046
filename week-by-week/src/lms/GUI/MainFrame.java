@@ -26,10 +26,10 @@ public class MainFrame extends JFrame{
         cardLayout=new CardLayout();
         mainPanel=new JPanel(cardLayout);
         mainPanel.add(new DashboardPanel(cardLayout, mainPanel),"Dashboard");
-        mainPanel.add(new BooksPanel(library), "Books");
+        mainPanel.add(new BooksPanel(library),"Books");
         mainPanel.add(new MembersPanel(library),"Members");
-        mainPanel.add(new BorrowPanel(),"Borrow");
-        mainPanel.add(new ReturnPanel(),"Return");
+        mainPanel.add(new BorrowPanel(library),"Borrow");
+        mainPanel.add(new ReturnPanel(library),"Return");
         add(mainPanel, BorderLayout.CENTER);
         JLabel statusBar=new JLabel("Library Management System");
         statusBar.setBorder(BorderFactory.createEtchedBorder());
