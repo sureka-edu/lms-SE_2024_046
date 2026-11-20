@@ -23,8 +23,11 @@ public class BorrowPanel extends JPanel{
         formPanel.add(itemIdField);
         formPanel.add(memberIdLabel);
         formPanel.add(memberIdField);
-        formPanel.add(borrowButton);
-        formPanel.add(clearButton);
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,10,5));
+        buttonPanel.add(borrowButton);
+        buttonPanel.add(clearButton);
+        formPanel.add(new JLabel(""));
+        formPanel.add(buttonPanel);
         JButton backButton = new JButton("Back to Dashboard");
         backButton.addActionListener(e->{Container parent = getParent();
         if (parent instanceof JPanel) {
