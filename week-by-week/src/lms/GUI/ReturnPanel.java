@@ -27,6 +27,9 @@ public class ReturnPanel extends JPanel {
         add(heading, BorderLayout.NORTH);
         add(formPanel, BorderLayout.CENTER);
         add(backButton, BorderLayout.SOUTH);
-        setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+        setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createTitledBorder("Return Details"),
+            BorderFactory.createEmptyBorder(20,20,20,20)
+        ));
     }
 }
