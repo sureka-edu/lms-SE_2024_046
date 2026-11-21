@@ -10,7 +10,9 @@ import lms.model.DVD;
 import lms.exception.ItemNotAvailableException;
 import lms.exception.BorrowLimitExceededException;
 public class BorrowPanel extends JPanel{
-    public BorrowPanel(Library library){
+    private Runnable refreshCallback;
+    public BorrowPanel(Library library,Runnable refreshCallback){
+        this.refreshCallback = refreshCallback;
         setLayout(new BorderLayout(10,10));
         JLabel heading=new JLabel("Borrow Library Item",SwingConstants.CENTER);
         heading.setFont(new Font("Arial",Font.BOLD,22));
@@ -69,6 +71,7 @@ public class BorrowPanel extends JPanel{
             }
             try{
                 library.borrowItem(selectedItem,selectedMember);
+                refreshCallback.run();
                 JOptionPane.showMessageDialog(this,"Item borrowed successfully");
             }catch(ItemNotAvailableException | BorrowLimitExceededException ex){
                 JOptionPane.showMessageDialog(this,ex.getMessage(),"Borrow Error",JOptionPane.ERROR_MESSAGE);
