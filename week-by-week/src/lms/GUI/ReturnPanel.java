@@ -6,7 +6,9 @@ import lms.service.Library;
 import lms.model.LibraryItem;
 import lms.exception.ItemNotBorrowedException;
 public class ReturnPanel extends JPanel{
-    public ReturnPanel(Library library){
+    private Runnable refreshCallback;
+    public ReturnPanel(Library library, Runnable refreshCallback){
+        this.refreshCallback = refreshCallback;
         setLayout(new BorderLayout(10,10));
         JLabel heading=new JLabel("Return Library Item",SwingConstants.CENTER);
         heading.setFont(new Font("Arial",Font.BOLD,22));
@@ -42,6 +44,7 @@ public class ReturnPanel extends JPanel{
             }
             try{
                 library.returnItem(selectedItem);
+                refreshCallback.run();
                 JOptionPane.showMessageDialog(this,"Item returned successfully");
             }catch(ItemNotBorrowedException ex){
                 JOptionPane.showMessageDialog(this,ex.getMessage(),"Return Error",JOptionPane.ERROR_MESSAGE);
