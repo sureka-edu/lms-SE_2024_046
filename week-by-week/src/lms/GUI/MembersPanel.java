@@ -1,4 +1,4 @@
-package lms.gui;
+package lms.GUI;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
