@@ -1,9 +1,9 @@
 package lms.service;
 import lms.model.LibraryItem;
 import lms.model.Member;
-import lms.exception.ItemNotAvailableException;
-import lms.exception.ItemNotBorrowedException;
-import lms.exception.BorrowLimitExceededException;
+import lms.ItemNotAvailableException;
+import lms.ItemNotBorrowedException;
+import lms.BorrowLimitExceededException;
 import java.util.ArrayList;
 import java.util.List;
 public class Library {
