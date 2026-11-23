@@ -1,4 +1,4 @@
-package lms.exception;
+package lms;
 
 public class ItemNotAvailableException extends Exception {
 
