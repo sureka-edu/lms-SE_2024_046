@@ -7,8 +7,8 @@ import lms.model.LibraryItem;
 import lms.model.Member;
 import lms.model.Book;
 import lms.model.DVD;
-import lms.exception.ItemNotAvailableException;
-import lms.exception.BorrowLimitExceededException;
+import lms.ItemNotAvailableException;
+import lms.BorrowLimitExceededException;
 public class BorrowPanel extends JPanel{
     private Runnable refreshCallback;
     public BorrowPanel(Library library,Runnable refreshCallback){
