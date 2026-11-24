@@ -64,4 +64,9 @@ public class Library{
         member.setBorrowedCount(member.getBorrowedCount()-1);
         borrowedItems.remove(item);
     }
+    public void displayLateFees(int daysLate){
+        for(LibraryItem item : items)
+            System.out.println(item.getTitle()+" late fee(" +daysLate+" days): "+item.calculateLateFee(daysLate));
+        }
+    }
 }
