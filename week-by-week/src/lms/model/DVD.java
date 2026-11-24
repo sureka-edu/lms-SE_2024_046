@@ -24,10 +24,5 @@ public class DVD extends LibraryItem{
 
     @Override
     public void displayDetails(){
-        System.out.println("DVD Details");
-        System.out.println("ID: "+getId());
-        System.out.println("Title: "+getTitle());
-        System.out.println("Duration: "+durationMinutes+" minutes");
-        System.out.println("Borrowed: "+isBorrowed());
     }
 }
