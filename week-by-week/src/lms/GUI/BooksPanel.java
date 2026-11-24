@@ -2,14 +2,14 @@ package lms.GUI;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import lms.service.Library;
+import lms.service.LibraryController;
 import lms.model.LibraryItem;
 import lms.model.Book;
 public class BooksPanel extends JPanel{
-    private Library library;
+    private LibraryController controller;
     private DefaultTableModel tableModel;
-    public BooksPanel(Library library){
-        this.library = library;
+    public BooksPanel(LibraryController controller){
+        this.controller = controller;
         setLayout(new BorderLayout(10,10));
         JLabel heading=new JLabel("Books Management",SwingConstants.CENTER);
         heading.setFont(new Font("Arial",Font.BOLD,22));
@@ -36,7 +36,7 @@ public class BooksPanel extends JPanel{
     }
     public void refreshTable(){
         tableModel.setRowCount(0);
-        for(LibraryItem item : library.getItems()){
+        for(LibraryItem item : controller.getItems()){
             if(item instanceof Book){
                 Book book=(Book)item;
                 String status=item.isBorrowed()? "Borrowed":"Available";
