@@ -13,11 +13,6 @@ public class Book extends LibraryItem{
         this.author = author;
     }
     @Override
-    public void displayDetails(){
-        System.out.println("Book Details");
-        System.out.println("ID: "+getId());
-        System.out.println("Title: "+getTitle());
-        System.out.println("Author: "+author);
-        System.out.println("Borrowed: "+isBorrowed());
+    public void displayDetails(){  
     }
 }
