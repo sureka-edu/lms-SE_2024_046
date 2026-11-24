@@ -19,7 +19,7 @@ public class BorrowPanel extends JPanel{
         JLabel itemIdLabel =new JLabel("Item ID:");
         JLabel memberIdLabel= new JLabel("Member ID:");
 
-        String[] itemTypes ={"Book","DVD"};
+        String[] itemTypes ={"Book","DVD","Magazine"};
         JComboBox<String> itemTypeBox=new JComboBox<>(itemTypes);
         JTextField itemIdField=new JTextField();
         JTextField memberIdField=new JTextField();
