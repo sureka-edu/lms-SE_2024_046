@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import lms.service.Library;
 import lms.model.LibraryItem;
-import lms.exception.ItemNotBorrowedException;
+import lms.ItemNotBorrowedException;
 public class ReturnPanel extends JPanel{
     private Runnable refreshCallback;
     public ReturnPanel(Library library, Runnable refreshCallback){
