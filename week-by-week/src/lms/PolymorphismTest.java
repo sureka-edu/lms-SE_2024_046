@@ -37,12 +37,12 @@ public static void main(String[] args) {
         System.out.println("Exception caught: "+e.getMessage());
     }
     try{
-        library.returnItem(book,member);
+        library.returnItem(book);
     } catch (ItemNotBorrowedException e){
         System.out.println("Error: "+e.getMessage());
     }
     try{
-        library.returnItem(book,member);
+        library.returnItem(book);
     } catch (ItemNotBorrowedException e){
         System.out.println("Exception caught: "+e.getMessage());
     }
