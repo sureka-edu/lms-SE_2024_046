@@ -57,7 +57,6 @@ public class Library{
         item.setBorrowed(true);
         member.setBorrowedCount(member.getBorrowedCount()+1);
         borrowedItems.put(item,member);
-        System.out.println("item borrowed successfully");
     }
     public void returnItem(LibraryItem item) throws ItemNotBorrowedException{
         if(!item.isBorrowed()){
@@ -70,6 +69,5 @@ public class Library{
         item.setBorrowed(false);
         member.setBorrowedCount(member.getBorrowedCount()-1);
         borrowedItems.remove(item);
-        System.out.println("Item returned successfully");
     }
 }
