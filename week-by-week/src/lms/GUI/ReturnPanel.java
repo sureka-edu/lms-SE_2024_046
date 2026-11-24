@@ -2,13 +2,14 @@ package lms.GUI;
 
 import javax.swing.*;
 import java.awt.*;
-import lms.service.Library;
-import lms.model.LibraryItem;
-import lms.exception.ItemNotBorrowedException;
+import lms.service.LibraryController;
+import lms.ItemNotBorrowedException;
 public class ReturnPanel extends JPanel{
     private Runnable refreshCallback;
-    public ReturnPanel(Library library, Runnable refreshCallback){
-        this.refreshCallback = refreshCallback;
+    private LibraryController controller;
+    public ReturnPanel(LibraryController controller,Runnable refreshCallback){
+        this.controller =controller;
+        this.refreshCallback =refreshCallback;
         setLayout(new BorderLayout(10,10));
         JLabel heading=new JLabel("Return Library Item",SwingConstants.CENTER);
         heading.setFont(new Font("Arial",Font.BOLD,22));
@@ -24,29 +25,14 @@ public class ReturnPanel extends JPanel{
         returnButton.addActionListener(e ->{
             String itemId=itemIdField.getText().trim();
             if (itemId.isEmpty()){
-                JOptionPane.showMessageDialog(this, "Please enter an Item ID");
-                return;
-            }
-            LibraryItem selectedItem = null;
-            for(LibraryItem item : library.getItems()){
-                if(item.getId().equalsIgnoreCase(itemId)){
-                    selectedItem = item;
-                    break;
-                }
-            }
-            if (selectedItem==null){
-                JOptionPane.showMessageDialog(this, "item not found");
-                return;
-            }
-            if(!selectedItem.isBorrowed()){
-                JOptionPane.showMessageDialog(this,"this item has not been borrowed");
+                JOptionPane.showMessageDialog(this,"Please enter an Item ID");
                 return;
             }
             try{
-                library.returnItem(selectedItem);
+                controller.returnItem(itemId);
                 refreshCallback.run();
                 JOptionPane.showMessageDialog(this,"Item returned successfully");
-            }catch(ItemNotBorrowedException ex){
+            }catch(IllegalArgumentException | ItemNotBorrowedException ex){
                 JOptionPane.showMessageDialog(this,ex.getMessage(),"Return Error",JOptionPane.ERROR_MESSAGE);
             }
         });
