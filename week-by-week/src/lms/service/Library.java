@@ -31,21 +31,15 @@ public class Library{
     public List<Member> getMembers(){
         return members;
     }
-    public void displayItems(){
+    public boolean hasItem(String id){
         for(LibraryItem item : items){
-            System.out.println(item);
+            if(item.getId().equals(id)){
+                return true;
+            }
         }
+        return false;
     }
-    public void displayMembers(){
-        for(Member member : members){
-            System.out.println(member);
-        }
-    }
-    public void displayLateFees(int daysLate){
-        for(LibraryItem item : items){
-            System.out.println(item.getTitle()+"-Late Fee: Rs. "+item.calculateLateFee(daysLate));
-        }
-    }
+    
     public void borrowItem(LibraryItem item,Member member)
             throws ItemNotAvailableException, BorrowLimitExceededException{
         if (item.isBorrowed()){
