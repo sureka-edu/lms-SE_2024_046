@@ -1,5 +1,4 @@
 package lms.model;
-
 public class Magazine extends LibraryItem{
     private int issueNumber;
     public Magazine(String id,String title,int issueNumber){
