@@ -8,12 +8,14 @@ import lms.model.Magazine;
 import lms.ItemNotAvailableException;
 import lms.ItemNotBorrowedException;
 import lms.BorrowLimitExceededException;
+import lms.MemberNotFoundException;
+
 import java.util.List;
 
 public class LibraryController{
     private Library library;
     public LibraryController(Library library){
-        this.library = library;
+        this.library=library;
     }
     public List<LibraryItem> getItems(){
         return library.getItems();
@@ -21,55 +23,86 @@ public class LibraryController{
     public List<Member> getMembers(){
         return library.getMembers();
     }
-    public boolean addItem(LibraryItem item){
-        if (library.hasItem(item.getId())){
-            return false;
-        }
-        library.addItem(item);
-        return true;
-    }
     public void addMember(Member member){
         library.addMember(member);
     }
-    public void borrowItem(String itemId,String memberId,String itemType)
-            throws ItemNotAvailableException, BorrowLimitExceededException{
-
-        LibraryItem selectedItem= null;
-        Member selectedMember= null;
-        for(LibraryItem item : library.getItems()){
-            if(item.getId().equalsIgnoreCase(itemId)){
-                if((itemType.equals("Book")&&item instanceof Book) ||(itemType.equals("DVD")&&item instanceof DVD) ||(itemType.equals("Magazine") && item instanceof Magazine)){
-                    selectedItem =item;
-                    break;
+    public void addItem(String type,String id,String title,String detail){
+        if(library.hasItem(id)){
+            throw new IllegalArgumentException("Item ID already exists");
+        }
+        LibraryItem item;
+        switch(type){
+            case "Book":
+                item =new Book(id,title,detail);
+                break;
+            case "DVD":
+                try{
+                    int duration=Integer.parseInt(detail);
+                    item =new DVD(id,title,duration);
+                }catch(NumberFormatException e){
+                    throw new IllegalArgumentException("Duration must be a whole number");
                 }
+                break;
+            case "Magazine":
+                try{
+                    int issueNumber=Integer.parseInt(detail);
+                    item =new Magazine(id,title,issueNumber);
+                }catch(NumberFormatException e){
+                    throw new IllegalArgumentException("Issue number must be a whole number");
+                }
+                break;
+
+            default:
+                throw new IllegalArgumentException("Invalid item type");
+        }
+        library.addItem(item);
+    }
+    public void borrow(String itemId,String memberId)
+            throws ItemNotAvailableException, MemberNotFoundException{
+        LibraryItem selectedItem =null;
+        Member selectedMember =null;
+
+        for(LibraryItem item :library.getItems()){
+            if(item.getId().equalsIgnoreCase(itemId)){
+                selectedItem=item;
+                break;
             }
         }
-        for(Member member :library.getMembers()){
+
+        for(Member member : library.getMembers()){
             if(member.getMemberId().equalsIgnoreCase(memberId)){
                 selectedMember =member;
                 break;
             }
         }
         if(selectedItem==null){
-            throw new IllegalArgumentException("Item not found");
+            throw new ItemNotAvailableException("Item not found");
         }
-        if(selectedMember == null){
-            throw new IllegalArgumentException("Member not found");
+        if(selectedMember==null){
+            throw new MemberNotFoundException("Member not found");
         }
-        library.borrowItem(selectedItem,selectedMember);
+        try{
+            library.borrowItem(selectedItem,selectedMember);
+        }catch (BorrowLimitExceededException e){
+            throw new ItemNotAvailableException(e.getMessage());
+        }
     }
-    public void returnItem(String itemId)throws ItemNotBorrowedException{
-        LibraryItem selectedItem = null;
-        for(LibraryItem item : library.getItems()){
-            if(item.getId().equalsIgnoreCase(itemId)) {
-                selectedItem = item;
+    public void giveBack(String itemId)
+            throws ItemNotAvailableException{
+        LibraryItem selectedItem =null;
+        for(LibraryItem item :library.getItems()){
+            if(item.getId().equalsIgnoreCase(itemId)){
+                selectedItem=item;
                 break;
             }
         }
-        if (selectedItem == null){
-            throw new IllegalArgumentException("Item not found");
+        if(selectedItem==null){
+            throw new ItemNotAvailableException("Item not found");
         }
-        library.returnItem(selectedItem);
+        try{
+            library.returnItem(selectedItem);
+        }catch(ItemNotBorrowedException e){
+            throw new ItemNotAvailableException(e.getMessage());
+        }
     }
 }
-
