@@ -3,13 +3,16 @@ package lms.GUI;
 import javax.swing.*;
 import java.awt.*;
 import lms.service.LibraryController;
-import lms.ItemNotBorrowedException;
+import lms.ItemNotAvailableException;
+
 public class ReturnPanel extends JPanel{
     private Runnable refreshCallback;
+    private java.util.function.Consumer<String> statusCallback;
     private LibraryController controller;
-    public ReturnPanel(LibraryController controller,Runnable refreshCallback){
+    public ReturnPanel(LibraryController controller,Runnable refreshCallback,java.util.function.Consumer<String> statusCallback){
         this.controller =controller;
-        this.refreshCallback =refreshCallback;
+        this.refreshCallback= refreshCallback;
+        this.statusCallback =statusCallback;
         setLayout(new BorderLayout(10,10));
         JLabel heading=new JLabel("Return Library Item",SwingConstants.CENTER);
         heading.setFont(new Font("Arial",Font.BOLD,22));
@@ -22,24 +25,11 @@ public class ReturnPanel extends JPanel{
         formPanel.add(itemIdField);
         formPanel.add(returnButton);
         formPanel.add(clearButton);
-        returnButton.addActionListener(e ->{
-            String itemId=itemIdField.getText().trim();
-            if (itemId.isEmpty()){
-                JOptionPane.showMessageDialog(this,"Please enter an Item ID");
-                return;
-            }
-            try{
-                controller.returnItem(itemId);
-                refreshCallback.run();
-                JOptionPane.showMessageDialog(this,"Item returned successfully");
-            }catch(IllegalArgumentException | ItemNotBorrowedException ex){
-                JOptionPane.showMessageDialog(this,ex.getMessage(),"Return Error",JOptionPane.ERROR_MESSAGE);
-            }
-        });
+        returnButton.addActionListener(e->onReturn(itemIdField));
         clearButton.addActionListener(e->itemIdField.setText(""));
         JButton backButton=new JButton("Back to Dashboard");
         backButton.addActionListener(e->{
-            Container parent = getParent();
+            Container parent=getParent();
             if(parent instanceof JPanel){
                 CardLayout layout=(CardLayout)parent.getLayout();
                 layout.show(parent,"Dashboard");
@@ -48,9 +38,22 @@ public class ReturnPanel extends JPanel{
         add(heading,BorderLayout.NORTH);
         add(formPanel,BorderLayout.CENTER);
         add(backButton,BorderLayout.SOUTH);
-        setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Return Details"),
-                BorderFactory.createEmptyBorder(20,20,20,20)
-        ));
+        setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Return Details"),BorderFactory.createEmptyBorder(20,20,20,20)));
+    }
+    private void onReturn(JTextField itemIdField){
+        String itemId =itemIdField.getText().trim();
+        if(itemId.isEmpty()){
+            JOptionPane.showMessageDialog(this,"Please enter an Item ID","Input Error",JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        try{
+            controller.giveBack(itemId);
+            refreshCallback.run();
+            statusCallback.accept("Successfully returned item: "+itemId);
+            JOptionPane.showMessageDialog(this,"Item returned successfully","Success",JOptionPane.INFORMATION_MESSAGE);
+            itemIdField.setText("");
+        }catch(ItemNotAvailableException ex){
+            JOptionPane.showMessageDialog(this,ex.getMessage(),"Return Error",JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
