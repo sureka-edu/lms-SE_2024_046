@@ -23,7 +23,6 @@ public static void main(String[] args) {
     DVD dvd = new DVD("D02", "Rust", 120);
     library.addItem(book);
     library.addItem(dvd);
-    library.displayLateFees(3);
     Member member = new Member("M01","Jack",3);
     System.out.println("Exception Handling Tests");
     try{
