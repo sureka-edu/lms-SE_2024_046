@@ -27,8 +27,8 @@ public class MainFrame extends JFrame{
         mainPanel.add(booksPanel,"Books");
         mainPanel.add(membersPanel,"Members");
         mainPanel.add(magazinePanel,"Magazines");
-        mainPanel.add(new BorrowPanel(controller, this::refreshTables),"Borrow");
-        mainPanel.add(new ReturnPanel(controller, this::refreshTables),"Return");
+        mainPanel.add(new BorrowPanel(controller,this::refreshTables,this::updateStatus),"Borrow");
+        mainPanel.add(new ReturnPanel(controller,this::refreshTables,this::updateStatus),"Return");
         add(mainPanel, BorderLayout.CENTER);
         statusBar=new JLabel("Library Management System");
         statusBar.setBorder(BorderFactory.createEtchedBorder());
