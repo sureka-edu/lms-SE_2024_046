@@ -18,6 +18,7 @@ public abstract class LibraryItem {
     public boolean isBorrowed(){
         return isBorrowed;
     }
+    private Member borrower;
     public void setId(String id){
         this.id = id;
     }
@@ -31,4 +32,10 @@ public abstract class LibraryItem {
         return daysLate * 10.0;
     }
     public abstract void displayDetails();
+    public Member getBorrower(){
+        return borrower;
+    }
+    public void setBorrower(Member borrower){
+        this.borrower = borrower;
+}
 }
