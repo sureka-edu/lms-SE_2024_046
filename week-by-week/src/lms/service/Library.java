@@ -49,6 +49,7 @@ public class Library{
             throw new BorrowLimitExceededException("member has reached the borrowing limit");
         }
         item.setBorrowed(true);
+        item.setBorrower(member);
         member.setBorrowedCount(member.getBorrowedCount()+1);
         borrowedItems.put(item,member);
     }
@@ -61,6 +62,7 @@ public class Library{
             throw new ItemNotBorrowedException("Borrower info not found");
         }
         item.setBorrowed(false);
+        item.setBorrower(null);
         member.setBorrowedCount(member.getBorrowedCount()-1);
         borrowedItems.remove(item);
     }
