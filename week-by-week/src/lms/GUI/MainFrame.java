@@ -23,7 +23,7 @@ public class MainFrame extends JFrame{
         mainPanel =new JPanel(cardLayout);
         booksPanel= new BooksPanel(controller);
         membersPanel= new MembersPanel(controller);
-        magazinePane= new MagazinePanel(controller);
+        magazinePanel= new MagazinePanel(controller);
         mainPanel.add(new DashboardPanel(cardLayout,mainPanel),"Dashboard");
         mainPanel.add(booksPanel,"Books");
         mainPanel.add(membersPanel,"Members");
