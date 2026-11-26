@@ -15,24 +15,25 @@ public class BorrowPanel extends JPanel{
     private LibraryController controller;
     private JComboBox<String> memberBox;
     public BorrowPanel(LibraryController controller,Runnable refreshCallback,java.util.function.Consumer<String> statusCallback,Supplier<String> selectedItemCallback){
-        this.controller =controller;
-        this.refreshCallback =refreshCallback;
+
+        this.controller = controller;
+        this.refreshCallback= refreshCallback;
         this.statusCallback =statusCallback;
-        this.selectedItemCallback=selectedItemCallback;
+        this.selectedItemCallback =selectedItemCallback;
         setLayout(new BorderLayout(10,10));
         JLabel heading = new JLabel("Borrow Library Item",SwingConstants.CENTER);
         heading.setFont(new Font("Arial",Font.BOLD,22));
-        JPanel formPanel=new JPanel(new GridLayout(2,2,10,10));
-        JLabel itemIdLabel= new JLabel("Selected Item ID:");
+        JPanel formPanel = new JPanel(new GridLayout(2,2,10,10));
+        JLabel itemIdLabel=new JLabel("Selected Item ID:");
         JLabel memberLabel=new JLabel("Select Member:");
         JTextField itemIdField=new JTextField();
         itemIdField.setEditable(false);
         memberBox=new JComboBox<>();
-        for(Member member:controller.getMembers()){
-            memberBox.addItem(member.getName()+" - "+ member.getMemberId());
+        for(Member member :controller.getMembers()){
+            memberBox.addItem(member.getName()+" - " +member.getMemberId());
         }
-        JButton borrowButton= new JButton("Borrow");
-        JButton clearButton =new JButton("Clear");
+        JButton borrowButton=new JButton("Borrow");
+        JButton clearButton=new JButton("Clear");
         formPanel.add(itemIdLabel);
         formPanel.add(itemIdField);
         formPanel.add(memberLabel);
@@ -42,11 +43,11 @@ public class BorrowPanel extends JPanel{
         borrowButton.addActionListener(e->onBorrow(itemIdField));
         clearButton.addActionListener(e->{
             itemIdField.setText("");
-            if(memberBox.getItemCount()> 0){
+            if(memberBox.getItemCount()>0){
                 memberBox.setSelectedIndex(0);
             }
         });
-        JButton backButton=new JButton("Back to Dashboard");
+        JButton backButton = new JButton("Back to Dashboard");
         backButton.addActionListener(e->{
             Container parent=getParent();
             if(parent instanceof JPanel){
@@ -61,18 +62,18 @@ public class BorrowPanel extends JPanel{
     }
     private void onBorrow(JTextField itemIdField){
         String itemId=selectedItemCallback.get();
-        if(itemId == null){
-            JOptionPane.showMessageDialog(this,"select an item from the Books or Magazines","No Item Selected",JOptionPane.INFORMATION_MESSAGE);
+
+        if(itemId==null){
+            JOptionPane.showMessageDialog(this,"select an item from the Books or Magazines table first","No Item Selected",JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         itemIdField.setText(itemId);
         String selectedMember=(String)memberBox.getSelectedItem();
-        if(selectedMember == null){
-            JOptionPane.showMessageDialog(
-                    this,"select a member","Input Error",JOptionPane.INFORMATION_MESSAGE);
+        if(selectedMember==null){
+            JOptionPane.showMessageDialog(this,"select a member","Input Error",JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        String memberId =selectedMember.substring(selectedMember.lastIndexOf(" - ") +3);
+        String memberId=selectedMember.substring(selectedMember.lastIndexOf(" - ")+3);
         try{
             controller.borrow(itemId, memberId);
             refreshCallback.run();
