@@ -11,6 +11,7 @@ public class MainFrame extends JFrame{
     private BooksPanel booksPanel;
     private MembersPanel membersPanel;
     private MagazinePanel magazinePanel;
+    private DVDPanel dvdPanel;
     private JLabel statusBar;
     private AddItemPanel addItemPanel;
 
@@ -25,11 +26,13 @@ public class MainFrame extends JFrame{
         booksPanel= new BooksPanel(controller);
         membersPanel= new MembersPanel(controller);
         magazinePanel= new MagazinePanel(controller);
+        dvdPanel = new DVDPanel(controller);
         addItemPanel = new AddItemPanel(controller,this::refreshTables,this::updateStatus);
         mainPanel.add(new DashboardPanel(cardLayout,mainPanel),"Dashboard");
         mainPanel.add(booksPanel,"Books");
         mainPanel.add(membersPanel,"Members");
         mainPanel.add(magazinePanel,"Magazines");
+        mainPanel.add(dvdPanel, "DVDs");
         mainPanel.add(new BorrowPanel(controller,this::refreshTables,this::updateStatus,this::getSelectedItemId),"Borrow");
         mainPanel.add(new ReturnPanel(controller,this::refreshTables,this::updateStatus,this::getSelectedItemId),"Return");
         mainPanel.add(addItemPanel, "AddItem");
@@ -49,12 +52,17 @@ public class MainFrame extends JFrame{
         if(magazineId !=null){
             return magazineId;
         }
+        String dvdId = dvdPanel.getSelectedItemId();
+        if(dvdId !=null){
+            return dvdId;
+        }
         return null;
     }
     public void refreshTables(){
         booksPanel.refreshTable();
         membersPanel.refreshTable();
         magazinePanel.refreshTable();
+        dvdPanel.refreshTable();
     }
     public void updateStatus(String message){
         statusBar.setText(message);
