@@ -23,7 +23,7 @@ public class ReturnPanel extends JPanel{
         JPanel formPanel = new JPanel(new GridLayout(2,2,10,10));
         JLabel itemIdLabel =new JLabel("Selected Item ID:");
         JTextField itemIdField =new JTextField();
-        itemIdField.setEditable(false);
+        itemIdField.setEditable(true);
         JButton returnButton=new JButton("Return");
         JButton clearButton=new JButton("Clear");
         formPanel.add(itemIdLabel);
@@ -46,7 +46,14 @@ public class ReturnPanel extends JPanel{
         setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Return Details"),BorderFactory.createEmptyBorder(20,20,20,20)));
     }
     private void onReturn(JTextField itemIdField){
-        String itemId = selectedItemCallback.get();
+        String itemId = itemIdField.getText().trim();
+        if(itemId.isEmpty()){
+            itemId=selectedItemCallback.get();
+        }
+        if(itemId==null || itemId.isEmpty()){
+            JOptionPane.showMessageDialog(this,"enter an Item ID or select an item from the table","no item selected",JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         if(itemId == null){
             JOptionPane.showMessageDialog(this,"select an item from the Books or Magazines","no item selected",JOptionPane.INFORMATION_MESSAGE);
             return;
