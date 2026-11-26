@@ -12,6 +12,7 @@ public class MainFrame extends JFrame{
     private MembersPanel membersPanel;
     private MagazinePanel magazinePanel;
     private JLabel statusBar;
+    private AddItemPanel addItemPanel;
 
     public MainFrame(LibraryController controller){
         this.controller=controller;
@@ -24,12 +25,14 @@ public class MainFrame extends JFrame{
         booksPanel= new BooksPanel(controller);
         membersPanel= new MembersPanel(controller);
         magazinePanel= new MagazinePanel(controller);
+        addItemPanel = new AddItemPanel(controller,this::refreshTables,this::updateStatus);
         mainPanel.add(new DashboardPanel(cardLayout,mainPanel),"Dashboard");
         mainPanel.add(booksPanel,"Books");
         mainPanel.add(membersPanel,"Members");
         mainPanel.add(magazinePanel,"Magazines");
         mainPanel.add(new BorrowPanel(controller,this::refreshTables,this::updateStatus,this::getSelectedItemId),"Borrow");
         mainPanel.add(new ReturnPanel(controller,this::refreshTables,this::updateStatus,this::getSelectedItemId),"Return");
+        mainPanel.add(addItemPanel, "AddItem");
         add(mainPanel,BorderLayout.CENTER);
         statusBar=new JLabel("Library Management System");
         statusBar.setBorder(BorderFactory.createEtchedBorder());
