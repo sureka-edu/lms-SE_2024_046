@@ -5,6 +5,7 @@ import lms.model.Member;
 import lms.ItemNotAvailableException;
 import lms.ItemNotBorrowedException;
 import lms.BorrowLimitExceededException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
@@ -15,9 +16,9 @@ public class Library{
     private List<Member> members;
     private Map<LibraryItem, Member> borrowedItems;
     public Library(){
-        items = new ArrayList<>();
-        members = new ArrayList<>();
-        borrowedItems = new HashMap<>();
+        items=new ArrayList<>();
+        members=new ArrayList<>();
+        borrowedItems =new HashMap<>();
     }
     public void addItem(LibraryItem item){
         items.add(item);
@@ -33,7 +34,7 @@ public class Library{
     }
     public boolean hasItem(String id){
         for(LibraryItem item : items){
-            if(item.getId().equals(id)){
+            if(item.getId().equalsIgnoreCase(id)){
                 return true;
             }
         }
@@ -42,23 +43,24 @@ public class Library{
     
     public void borrowItem(LibraryItem item,Member member)
             throws ItemNotAvailableException, BorrowLimitExceededException{
-        if (item.isBorrowed()){
+        if(item.isBorrowed()){
             throw new ItemNotAvailableException("This item is already borrowed");
         }
-        if(member.getBorrowedCount()>=member.getMaxBorrowLimit()){
-            throw new BorrowLimitExceededException("member has reached the borrowing limit");
+        if(member.getBorrowedCount() >= member.getMaxBorrowLimit()){
+            throw new BorrowLimitExceededException("Member has reached the borrowing limit");
         }
         item.setBorrowed(true);
         item.setBorrower(member);
         member.setBorrowedCount(member.getBorrowedCount()+1);
         borrowedItems.put(item,member);
     }
-    public void returnItem(LibraryItem item) throws ItemNotBorrowedException{
-        if(!item.isBorrowed()){
-            throw new ItemNotBorrowedException("this item has not been borrowed");
+    public void returnItem(LibraryItem item)
+            throws ItemNotBorrowedException {
+        if (!item.isBorrowed()){
+            throw new ItemNotBorrowedException("This item has not been borrowed");
         }
-        Member member=borrowedItems.get(item);
-        if (member==null){
+        Member member = borrowedItems.get(item);
+        if(member == null){
             throw new ItemNotBorrowedException("Borrower info not found");
         }
         item.setBorrowed(false);

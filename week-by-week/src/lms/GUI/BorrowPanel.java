@@ -7,7 +7,6 @@ import lms.service.LibraryController;
 import lms.ItemNotAvailableException;
 import lms.MemberNotFoundException;
 import lms.model.Member;
-
 public class BorrowPanel extends JPanel{
     private Runnable refreshCallback;
     private java.util.function.Consumer<String> statusCallback;
