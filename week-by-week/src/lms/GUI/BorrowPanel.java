@@ -2,85 +2,49 @@ package lms.GUI;
 
 import javax.swing.*;
 import java.awt.*;
-import lms.service.Library;
-import lms.model.LibraryItem;
-import lms.model.Member;
-import lms.model.Book;
-import lms.model.DVD;
+import java.util.function.Supplier;
+import lms.service.LibraryController;
 import lms.ItemNotAvailableException;
-import lms.BorrowLimitExceededException;
+import lms.MemberNotFoundException;
+import lms.model.Member;
 public class BorrowPanel extends JPanel{
     private Runnable refreshCallback;
-    public BorrowPanel(Library library,Runnable refreshCallback){
-        this.refreshCallback = refreshCallback;
+    private java.util.function.Consumer<String> statusCallback;
+    private Supplier<String> selectedItemCallback;
+    private LibraryController controller;
+    private JComboBox<String> memberBox;
+    public BorrowPanel(LibraryController controller,Runnable refreshCallback,java.util.function.Consumer<String> statusCallback,Supplier<String> selectedItemCallback){
+
+        this.controller = controller;
+        this.refreshCallback= refreshCallback;
+        this.statusCallback =statusCallback;
+        this.selectedItemCallback =selectedItemCallback;
         setLayout(new BorderLayout(10,10));
-        JLabel heading=new JLabel("Borrow Library Item",SwingConstants.CENTER);
+        JLabel heading = new JLabel("Borrow Library Item",SwingConstants.CENTER);
         heading.setFont(new Font("Arial",Font.BOLD,22));
-        JPanel formPanel=new JPanel(new GridLayout(4,2,10,10));
-        JLabel itemTypeLabel=new JLabel("Item Type:");
-        JLabel itemIdLabel=new JLabel("Item ID:");
-        JLabel memberIdLabel=new JLabel("Member ID:");
-        String[] itemTypes={"Book","DVD"};
-        JComboBox<String> itemTypeBox=new JComboBox<>(itemTypes);
+        JPanel formPanel = new JPanel(new GridLayout(2,2,10,10));
+        JLabel itemIdLabel=new JLabel("Selected Item ID:");
+        JLabel memberLabel=new JLabel("Select Member:");
         JTextField itemIdField=new JTextField();
-        JTextField memberIdField=new JTextField();
+        itemIdField.setEditable(false);
+        memberBox=new JComboBox<>();
+        for(Member member :controller.getMembers()){
+            memberBox.addItem(member.getName()+" - " +member.getMemberId());
+        }
         JButton borrowButton=new JButton("Borrow");
         JButton clearButton=new JButton("Clear");
-        formPanel.add(itemTypeLabel);
-        formPanel.add(itemTypeBox);
         formPanel.add(itemIdLabel);
         formPanel.add(itemIdField);
-        formPanel.add(memberIdLabel);
-        formPanel.add(memberIdField);
-        JPanel buttonPanel=new JPanel(new FlowLayout(FlowLayout.CENTER,10,5));
-        buttonPanel.add(borrowButton);
-        buttonPanel.add(clearButton);
-        formPanel.add(new JLabel(""));
-        formPanel.add(buttonPanel);
-        borrowButton.addActionListener(e->{
-            String selectedType=(String)itemTypeBox.getSelectedItem();
-            String itemId=itemIdField.getText().trim();
-            String memberId=memberIdField.getText().trim();
-            if (itemId.isEmpty()||memberId.isEmpty()){
-                JOptionPane.showMessageDialog(this,"Please enter both item ID and member ID");
-                return;
-            }
-            LibraryItem selectedItem=null;
-            Member selectedMember=null;
-            for(LibraryItem item : library.getItems()){
-                if(item.getId().equalsIgnoreCase(itemId)){
-                    if ((selectedType.equals("Book") && item instanceof Book)||(selectedType.equals("DVD") && item instanceof DVD)){
-                        selectedItem=item;
-                        break;
-                    }
-                }
-            }
-            for(Member member : library.getMembers()){
-                if(member.getMemberId().equalsIgnoreCase(memberId)){
-                    selectedMember=member;
-                    break;
-                }
-            }
-            if (selectedItem==null){
-                JOptionPane.showMessageDialog(this,"Item not found");
-                return;
-            }
-            if (selectedMember==null){
-                JOptionPane.showMessageDialog(this,"Member not found");
-                return;
-            }
-            try{
-                library.borrowItem(selectedItem,selectedMember);
-                refreshCallback.run();
-                JOptionPane.showMessageDialog(this,"Item borrowed successfully");
-            }catch(ItemNotAvailableException | BorrowLimitExceededException ex){
-                JOptionPane.showMessageDialog(this,ex.getMessage(),"Borrow Error",JOptionPane.ERROR_MESSAGE);
-            }
-        });
+        formPanel.add(memberLabel);
+        formPanel.add(memberBox);
+        formPanel.add(borrowButton);
+        formPanel.add(clearButton);
+        borrowButton.addActionListener(e->onBorrow(itemIdField));
         clearButton.addActionListener(e->{
-            itemTypeBox.setSelectedIndex(0);
             itemIdField.setText("");
-            memberIdField.setText("");
+            if(memberBox.getItemCount()>0){
+                memberBox.setSelectedIndex(0);
+            }
         });
         JButton backButton = new JButton("Back to Dashboard");
         backButton.addActionListener(e->{
@@ -93,9 +57,29 @@ public class BorrowPanel extends JPanel{
         add(heading,BorderLayout.NORTH);
         add(formPanel,BorderLayout.CENTER);
         add(backButton,BorderLayout.SOUTH);
-        setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Borrow Details"),
-                BorderFactory.createEmptyBorder(20,20,20,20)
-        ));
+        setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Borrow Details"),BorderFactory.createEmptyBorder(20,20,20,20)));
+    }
+    private void onBorrow(JTextField itemIdField){
+        String itemId=selectedItemCallback.get();
+
+        if(itemId==null){
+            JOptionPane.showMessageDialog(this,"select an item from the Books or Magazines table first","No Item Selected",JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        itemIdField.setText(itemId);
+        String selectedMember=(String)memberBox.getSelectedItem();
+        if(selectedMember==null){
+            JOptionPane.showMessageDialog(this,"select a member","Input Error",JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        String memberId=selectedMember.substring(selectedMember.lastIndexOf(" - ")+3);
+        try{
+            controller.borrow(itemId, memberId);
+            refreshCallback.run();
+            statusCallback.accept("Successfully borrowed item: "+itemId);
+            JOptionPane.showMessageDialog(this,"Item borrowed successfully","Success",JOptionPane.INFORMATION_MESSAGE);
+        }catch(ItemNotAvailableException | MemberNotFoundException ex){
+            JOptionPane.showMessageDialog(this,ex.getMessage(),"Borrow Error",JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

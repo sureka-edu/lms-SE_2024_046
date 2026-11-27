@@ -3,13 +3,13 @@ package lms.GUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 import java.awt.*;
-import lms.service.Library;
+import lms.service.LibraryController;
 import lms.model.Member;
 public class MembersPanel extends JPanel{
-    private Library library;
+    private LibraryController controller;
     private DefaultTableModel model;
-    public MembersPanel(Library library){
-        this.library = library;
+    public MembersPanel(LibraryController controller){
+        this.controller = controller;
         setLayout(new BorderLayout(10,10));
         JLabel heading=new JLabel("Members Management",SwingConstants.CENTER);
         heading.setFont(new Font("Arial",Font.BOLD,22));
@@ -36,7 +36,7 @@ public class MembersPanel extends JPanel{
     }
     public void refreshTable(){
         model.setRowCount(0);
-        for(Member member : library.getMembers()){
+        for(Member member :controller.getMembers()){
             model.addRow(new Object[]{member.getMemberId(),member.getName(),member.getMaxBorrowLimit(),member.getBorrowedCount()});
         }
     }

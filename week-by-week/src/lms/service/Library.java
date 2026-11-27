@@ -32,22 +32,15 @@ public class Library{
     public List<Member> getMembers(){
         return members;
     }
-    public void displayItems(){
-        for(LibraryItem item :items){
-            System.out.println(item);
-        }
-    }
-    public void displayMembers(){
-        for(Member member :members){
-            System.out.println(member);
-        }
-    }
-
-    public void displayLateFees(int daysLate){
+    public boolean hasItem(String id){
         for(LibraryItem item : items){
-            System.out.println(item.getTitle()+"-Late Fee: Rs. "+item.calculateLateFee(daysLate));
+            if(item.getId().equalsIgnoreCase(id)){
+                return true;
+            }
         }
+        return false;
     }
+    
     public void borrowItem(LibraryItem item,Member member)
             throws ItemNotAvailableException, BorrowLimitExceededException{
         if(item.isBorrowed()){
@@ -57,23 +50,22 @@ public class Library{
             throw new BorrowLimitExceededException("Member has reached the borrowing limit");
         }
         item.setBorrowed(true);
+        item.setBorrower(member);
         member.setBorrowedCount(member.getBorrowedCount()+1);
-        borrowedItems.put(item, member);
-        System.out.println("Item borrowed successfully");
+        borrowedItems.put(item,member);
     }
     public void returnItem(LibraryItem item)
             throws ItemNotBorrowedException {
         if (!item.isBorrowed()){
-            throw new ItemNotBorrowedException(
-                    "This item has not been borrowed");
+            throw new ItemNotBorrowedException("This item has not been borrowed");
         }
         Member member = borrowedItems.get(item);
         if(member == null){
             throw new ItemNotBorrowedException("Borrower info not found");
         }
         item.setBorrowed(false);
-        member.setBorrowedCount(member.getBorrowedCount() - 1);
+        item.setBorrower(null);
+        member.setBorrowedCount(member.getBorrowedCount()-1);
         borrowedItems.remove(item);
-        System.out.println("Item returned successfully");
     }
 }
